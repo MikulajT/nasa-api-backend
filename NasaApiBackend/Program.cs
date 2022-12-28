@@ -6,6 +6,10 @@ namespace NasaApiBackend
         {
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddControllers();
+            builder.Services.AddCors(options => options.AddPolicy("ApiCorsPolicy", builder =>
+            {
+                builder.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
+            }));
 
             var app = builder.Build();
 
@@ -14,6 +18,8 @@ namespace NasaApiBackend
             {
                 app.UseExceptionHandler("/Error");
             }
+            app.UseCors("ApiCorsPolicy");
+
             app.MapControllers();
 
             app.Run();
