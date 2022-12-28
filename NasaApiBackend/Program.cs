@@ -5,6 +5,8 @@ namespace NasaApiBackend
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddControllers();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -12,7 +14,7 @@ namespace NasaApiBackend
             {
                 app.UseExceptionHandler("/Error");
             }
-            app.UseRouting();
+            app.MapControllers();
 
             app.Run();
         }
