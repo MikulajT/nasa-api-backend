@@ -14,7 +14,7 @@ namespace NasaApiBackend.Controllers
         }
 
         [HttpGet]
-        public async Task<string> Apod()
+        public async Task<IActionResult> Apod()
         {
             using (HttpClient httpClient = new HttpClient())
             {
@@ -22,9 +22,9 @@ namespace NasaApiBackend.Controllers
                 if (result != null)
                 {
                     string jsonResult = await result.Content.ReadAsStringAsync();
-                    return jsonResult;
+                    return Ok(jsonResult);
                 }
-                return "";
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
         }
     }

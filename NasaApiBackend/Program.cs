@@ -5,7 +5,9 @@ namespace NasaApiBackend
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
             builder.Services.AddControllers();
+
             builder.Services.AddCors(options => options.AddPolicy("ApiCorsPolicy", builder =>
             {
                 builder.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
