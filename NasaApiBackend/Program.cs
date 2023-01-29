@@ -1,3 +1,5 @@
+using NasaApiBackend.Services;
+
 namespace NasaApiBackend
 {
     public class Program
@@ -12,6 +14,7 @@ namespace NasaApiBackend
             {
                 builder.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
             }));
+            builder.Services.AddScoped<INeoService, NeoService>();
 
             var app = builder.Build();
 
