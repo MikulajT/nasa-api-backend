@@ -7,9 +7,9 @@ namespace NasaApiBackend.Models.Neo
         [JsonPropertyName("close_approach_date")]
         public DateTimeOffset CloseApproachDate { get; set; }
 
-        //TODO: Make parser for DateTime
         [JsonPropertyName("close_approach_date_full")]
-        public string CloseApproachDateFull { get; set; }
+        [JsonConverter(typeof(ParseDateTimeConverter))]
+        public DateTime CloseApproachDateFull { get; set; }
 
         [JsonPropertyName("epoch_date_close_approach")]
         public long EpochDateCloseApproach { get; set; }
