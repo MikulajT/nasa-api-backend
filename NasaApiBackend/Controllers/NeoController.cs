@@ -25,8 +25,8 @@ namespace NasaApiBackend.Controllers
             {
                 Dictionary<string, string?> urlQueryParams = new Dictionary<string, string?>
                 {
-                    { "api_key", _config["NasaApiKey"] },
-                    { "startDate", startDate.ToString("yyyy-MM-dd") }
+                    { "startDate", startDate.ToString("yyyy-MM-dd") },
+                    { "api_key", _config["NasaApiKey"] }
                 };
                 if (endDate != null)
                 {
