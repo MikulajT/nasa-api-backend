@@ -19,19 +19,16 @@ namespace NasaApiBackend.Controllers
             _neoService = neoService;
         }
 
-        public async Task<IActionResult> Neo(DateTime startDate, DateTime? endDate)
+        public async Task<IActionResult> Neo(DateTime startDate, DateTime endDate)
         {
             try
             {
                 Dictionary<string, string?> urlQueryParams = new Dictionary<string, string?>
                 {
-                    { "startDate", startDate.ToString("yyyy-MM-dd") },
+                    { "start_date", startDate.ToString("yyyy-MM-dd") },
+                    { "end_date", endDate.ToString("yyyy-MM-dd") },
                     { "api_key", _config["NasaApiKey"] }
                 };
-                if (endDate != null)
-                {
-                    urlQueryParams.Add("endDate", endDate.Value.ToString("yyyy-MM-dd"));
-                }
                 string baseUrl = "https://api.nasa.gov/neo/rest/v1/feed";
                 string url = QueryHelpers.AddQueryString(baseUrl, urlQueryParams);
                 using (HttpClient httpClient = new HttpClient())
