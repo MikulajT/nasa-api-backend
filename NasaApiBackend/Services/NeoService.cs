@@ -14,12 +14,16 @@ namespace NasaApiBackend.Services
                     {
                         Id = neo.Id,
                         Name = neo.Name,
-                        EstimatedDiameter = (neo.EstimatedDiameter.Kilometers.EstimatedDiameterMin + neo.EstimatedDiameter.Kilometers.EstimatedDiameterMax) / 2,
+                        EstimatedDiameter = (decimal)(neo.EstimatedDiameter.Kilometers.EstimatedDiameterMin + neo.EstimatedDiameter.Kilometers.EstimatedDiameterMax) / 2,
                         IsPotentiallyHazardousAsteroid = neo.IsPotentiallyHazardousAsteroid,
                         CloseApproachDateFull = neo.CloseApproachData.First().CloseApproachDateFull,
-                        MissDistance = neo.CloseApproachData.First().MissDistance.Kilometers
+                        MissDistance = (decimal)neo.CloseApproachData.First().MissDistance.Kilometers
 
                     };
+
+                    //Round to 3 decimal places
+                    outputNeoModel.EstimatedDiameter = Math.Truncate(outputNeoModel.EstimatedDiameter * 1000m) / 1000m;
+                    outputNeoModel.MissDistance = Math.Truncate(outputNeoModel.MissDistance * 1000m) / 1000m;
                     yield return outputNeoModel;
                 }
             }
