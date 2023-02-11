@@ -37,7 +37,9 @@ namespace NasaApiBackend.Controllers
                     result.EnsureSuccessStatusCode();
                     string jsonResult = await result.Content.ReadAsStringAsync();
                     var inputNeoModel = JsonSerializer.Deserialize<InputNeoModel>(jsonResult);
-                    var neoOutputModel = _neoService.GetOutputNeosModel(inputNeoModel).ToList();
+                    var neoOutputModel = _neoService.GetOutputNeosModel(inputNeoModel)
+                        .OrderBy(x => x.MissDistance)
+                        .ToList();
                     return Ok(neoOutputModel);
                 }
             }
