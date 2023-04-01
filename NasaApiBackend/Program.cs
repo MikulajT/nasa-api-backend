@@ -15,6 +15,7 @@ namespace NasaApiBackend
                 builder.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
             }));
             builder.Services.AddScoped<INeoService, NeoService>();
+            builder.Services.AddScoped<IMarsRoverService, MarsRoverService>();
 
             var app = builder.Build();
 
@@ -24,7 +25,6 @@ namespace NasaApiBackend
                 app.UseExceptionHandler("/Error");
             }
             app.UseCors("ApiCorsPolicy");
-
             app.MapControllers();
 
             app.Run();

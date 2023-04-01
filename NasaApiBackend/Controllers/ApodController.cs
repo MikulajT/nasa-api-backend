@@ -2,8 +2,8 @@
 
 namespace NasaApiBackend.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class ApodController : Controller
     {
         private readonly IConfiguration _config;

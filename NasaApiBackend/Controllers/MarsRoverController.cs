@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using NasaApiBackend.Models.MarsRover;
 using NasaApiBackend.Models.Neo;
 using NasaApiBackend.Services;
 using System.Text.Json;
@@ -7,40 +8,38 @@ using System.Text.Json;
 namespace NasaApiBackend.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
-    public class NeoController : Controller
+    [Route("api/[controller]/[action]")]
+    public class MarsRoverController : Controller
     {
         private readonly IConfiguration _config;
-        private readonly INeoService _neoService;
+        private readonly IMarsRoverService _marsRoverService;
 
-        public NeoController(IConfiguration config, INeoService neoService)
+        public MarsRoverController(IConfiguration config, IMarsRoverService marsRoverService)
         {
             _config = config;
-            _neoService = neoService;
+            _marsRoverService = marsRoverService;
         }
 
-        public async Task<IActionResult> Neo(DateTime startDate, DateTime endDate)
+        public async Task<IActionResult> RoverPhotos(int roverId, DateTime date)
         {
             try
             {
+                string roverName = _marsRoverService.GetRoverNameFromId(roverId);
                 Dictionary<string, string?> urlQueryParams = new Dictionary<string, string?>
                 {
-                    { "start_date", startDate.ToString("yyyy-MM-dd") },
-                    { "end_date", endDate.ToString("yyyy-MM-dd") },
+                    { "earth_date", date.ToString("yyyy-MM-dd") },
                     { "api_key", _config["NasaApiKey"] }
                 };
-                string baseUrl = "https://api.nasa.gov/neo/rest/v1/feed";
+                string baseUrl = $"https://api.nasa.gov/mars-photos/api/v1/rovers/{roverName}/photos";
                 string url = QueryHelpers.AddQueryString(baseUrl, urlQueryParams);
                 using (HttpClient httpClient = new HttpClient())
                 {
                     var result = await httpClient.GetAsync(url);
                     result.EnsureSuccessStatusCode();
                     string jsonResult = await result.Content.ReadAsStringAsync();
-                    var inputNeoModel = JsonSerializer.Deserialize<InputNeoModel>(jsonResult);
-                    var neoOutputModel = _neoService.GetOutputNeosModel(inputNeoModel)
-                        .OrderBy(x => x.MissDistance)
-                        .ToList();
-                    return Ok(neoOutputModel);
+                    var inputMarsRoverModel = JsonSerializer.Deserialize<InputMarsRoverModel>(jsonResult);
+                    var outputMarsRoverModel = _marsRoverService.GetOutputMarsModel(inputMarsRoverModel).ToList();
+                    return Ok(outputMarsRoverModel);
                 }
             }
             catch (Exception ex)

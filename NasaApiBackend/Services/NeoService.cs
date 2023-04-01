@@ -6,6 +6,7 @@ namespace NasaApiBackend.Services
     {
         public IEnumerable<OutputNeoModel> GetOutputNeosModel(InputNeoModel inputNeoModel)
         {
+            List<OutputNeoModel> outputModel = new List<OutputNeoModel>();
             foreach (var neoByDays in inputNeoModel.NearEarthObjects.Values)
             {
                 foreach (var neo in neoByDays)
@@ -24,9 +25,10 @@ namespace NasaApiBackend.Services
                     //Round to 3 decimal places
                     outputNeoModel.EstimatedDiameter = Math.Truncate(outputNeoModel.EstimatedDiameter * 1000m) / 1000m;
                     outputNeoModel.MissDistance = Math.Truncate(outputNeoModel.MissDistance * 1000m) / 1000m;
-                    yield return outputNeoModel;
+                    outputModel.Add(outputNeoModel);
                 }
             }
+            return outputModel;
         }
     }
 }
