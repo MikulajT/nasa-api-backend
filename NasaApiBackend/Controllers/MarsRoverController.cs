@@ -20,7 +20,7 @@ namespace NasaApiBackend.Controllers
             _marsRoverService = marsRoverService;
         }
 
-        public async Task<IActionResult> RoverPhotos(int roverId, DateTime date)
+        public async Task<IActionResult> RoverPhotos(int roverId, DateTime date, string camera)
         {
             try
             {
@@ -28,6 +28,7 @@ namespace NasaApiBackend.Controllers
                 Dictionary<string, string?> urlQueryParams = new Dictionary<string, string?>
                 {
                     { "earth_date", date.ToString("yyyy-MM-dd") },
+                    { "camera", camera },
                     { "api_key", _config["NasaApiKey"] }
                 };
                 string baseUrl = $"https://api.nasa.gov/mars-photos/api/v1/rovers/{roverName}/photos";
