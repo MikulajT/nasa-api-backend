@@ -44,6 +44,42 @@ namespace NasaApiBackend.Controllers
             }
             catch (Exception ex)
             {
+                if (ex is HttpRequestException)
+                {
+                    HttpRequestException httpRequestException = (HttpRequestException)ex;
+                    return new StatusCodeResult((int)httpRequestException.StatusCode);
+                }
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        public async Task<IActionResult> RoverManifest(int roverId)
+        {
+            try
+            {
+                string roverName = _marsRoverService.GetRoverNameFromId(roverId);
+                Dictionary<string, string?> urlQueryParams = new Dictionary<string, string?>
+                {
+                    { "api_key", _config["NasaApiKey"] }
+                };
+                string baseUrl = $"https://api.nasa.gov/mars-photos/api/v1/manifests/{roverName}";
+                string url = QueryHelpers.AddQueryString(baseUrl, urlQueryParams);
+                using (HttpClient httpClient = new HttpClient())
+                {
+                    var result = await httpClient.GetAsync(url);
+                    result.EnsureSuccessStatusCode();
+                    string jsonResult = await result.Content.ReadAsStringAsync();
+                    var roverManifestModel = JsonSerializer.Deserialize<RovertManifestModel>(jsonResult);
+                    return Ok(roverManifestModel?.PhotoManifest);
+                }
+            }
+            catch (Exception ex) 
+            {
+                if (ex is HttpRequestException)
+                {
+                    HttpRequestException httpRequestException = (HttpRequestException)ex;
+                    return new StatusCodeResult((int)httpRequestException.StatusCode);
+                }
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
         }

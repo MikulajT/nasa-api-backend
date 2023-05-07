@@ -1,5 +1,4 @@
 ﻿using NasaApiBackend.Models.MarsRover;
-using NasaApiBackend.Models.Neo;
 
 namespace NasaApiBackend.Services
 {
