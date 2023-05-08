@@ -33,6 +33,7 @@ namespace NasaApiBackend.Services
             {
                 outputModel.Add(new OutputMarsRoverModel()
                 {
+                    Id = photo.Id,
                     CameraName = photo.Camera.Name,
                     CameraFullName = photo.Camera.FullName,
                     ImgSrc = photo.ImgSrc
