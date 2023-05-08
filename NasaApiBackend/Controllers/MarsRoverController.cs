@@ -30,7 +30,7 @@ namespace NasaApiBackend.Controllers
                     { "earth_date", date.ToString("yyyy-MM-dd") },
                     { "api_key", _config["NasaApiKey"] }
                 };
-                if (!string.IsNullOrEmpty(camera))
+                if (!string.IsNullOrEmpty(camera) && camera != "ALL")
                 {
                     urlQueryParams.Add("camera", camera);
                 }
